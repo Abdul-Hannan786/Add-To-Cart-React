@@ -11,13 +11,13 @@ const CreateProduct = () => {
 
   const handleStudents = () => {
     const newProduct = {
-        name: newName,
-        category: newCategory,
-        price: newPrice,
-        id: crypto.randomUUID()
-    }
-    addNewProduct(newProduct)
-  }
+      id: crypto.randomUUID(),
+      name: newName,
+      category: newCategory,
+      price: newPrice,
+    };
+    addNewProduct(newProduct);
+  };
 
   return (
     <div>
@@ -45,7 +45,13 @@ const CreateProduct = () => {
       />
       <br />
       <br />
-      <button onClick={() => {handleStudents( )}}>Create Product</button>
+      <button
+        onClick={() => {
+          handleStudents();
+        }}
+      >
+        Create Product
+      </button>
     </div>
   );
 };
