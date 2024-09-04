@@ -43,7 +43,7 @@ export default function Home() {
               padding: "20px",
               borderRadius: "10px",
               fontFamily: "sans-serif",
-              width: "250px",
+              width: "270px",
             }}
           >
             <h2 style={{ marginTop: "0" }}>Name: {name}</h2>
