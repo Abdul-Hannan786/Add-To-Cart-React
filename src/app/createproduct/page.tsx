@@ -16,7 +16,12 @@ const CreateProduct = () => {
       category: newCategory,
       price: newPrice,
     };
+    if(newName.trim() === "" || newCategory.trim() === "" || newPrice === 0){
+       return alert("please add the required information")
+    }
+    else{
     addNewProduct(newProduct);
+    }
   };
 
   return (
@@ -64,7 +69,7 @@ const CreateProduct = () => {
           }}
         />
         <input
-          type="text"
+          type="number"
           placeholder="Enter Product Price"
           value={newPrice}
           onChange={(e) => setNewPrice(Number(e.target.value))}
