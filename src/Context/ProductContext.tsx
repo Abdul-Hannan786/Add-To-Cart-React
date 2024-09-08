@@ -34,9 +34,9 @@ type ProductType = {
   id: string;
   name: string;
   category: string;
-  price: number;
+  price: number | string;
   quantity?: number;
-  totalPrice?: number;
+  totalPrice?: number | string;
 };
 
 type ProductContextType = {
@@ -46,13 +46,13 @@ type ProductContextType = {
   editedProduct: (
     editedName: string,
     editedCategory: string,
-    editedPrice: number
+    editedPrice: number | string
   ) => void;
   addNewProduct: (newProduct: ProductType) => void;
   addToCart: (index: number) => void;
   name: string;
   category: string;
-  price: number;
+  price: number | string;
 };
 
 const ProductContext = createContext<ProductContextType>({
@@ -64,7 +64,7 @@ const ProductContext = createContext<ProductContextType>({
   addToCart: () => {},
   name: "",
   category: "",
-  price: 0,
+  price: "",
 });
 
 const ProductContextProvider = ({ children }: { children: ReactNode }) => {
@@ -73,9 +73,7 @@ const ProductContextProvider = ({ children }: { children: ReactNode }) => {
   const [editIndex, setEditIndex] = useState<null | number>(null);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
-  const [price, setPrice] = useState<number>(0);
-  const [matchFound, setMatchFound] = useState(false);
-  const [targetIndex, setTargetIndex] = useState<number | null>(null);
+  const [price, setPrice] = useState<number| string>("");
 
   const router = useRouter();
 
@@ -96,7 +94,7 @@ const ProductContextProvider = ({ children }: { children: ReactNode }) => {
   const editedProduct = (
     editedName: string,
     editedCategory: string,
-    editedPrice: number
+    editedPrice: number | string
   ) => {
     if (editIndex !== null && editIndex < products.length) {
       const cloneStudents = [...products];
@@ -124,7 +122,7 @@ const ProductContextProvider = ({ children }: { children: ReactNode }) => {
       const cloneCartProduct = cloneCart[existingIndex];
       cloneCartProduct.quantity = (cloneCartProduct.quantity || 1) + 1;
       cloneCartProduct.totalPrice =
-        cloneCartProduct.quantity * cloneCartProduct.price;
+        cloneCartProduct.quantity * Number(cloneCartProduct.price);
       setCart(cloneCart);
     } else {
       setCart([...cart, {...product, quantity: 1, totalPrice: product.price}])
@@ -139,7 +137,7 @@ const ProductContextProvider = ({ children }: { children: ReactNode }) => {
     } else {
       setName("");
       setCategory("");
-      setPrice(0);
+      setPrice("");
     }
     console.log(cart);
   }, [editIndex, products, cart]);

@@ -7,20 +7,26 @@ const CreateProduct = () => {
   const { addNewProduct } = UseProductContext();
   const [newName, setNewName] = useState("");
   const [newCategory, setNewCategory] = useState("");
-  const [newPrice, setNewPrice] = useState<number>(0);
+  const [newPrice, setNewPrice] = useState<string>("");
 
   const handleStudents = () => {
-    const newProduct = {
-      id: crypto.randomUUID(),
-      name: newName,
-      category: newCategory,
-      price: newPrice,
-    };
-    if(newName.trim() === "" || newCategory.trim() === "" || newPrice === 0){
-       return alert("please add the required information")
-    }
-    else{
-    addNewProduct(newProduct);
+    const parsedPrice = parseFloat(newPrice);
+
+    if (
+      newName.trim() === "" ||
+      newCategory.trim() === "" ||
+      isNaN(parsedPrice) ||
+      parsedPrice <= 0
+    ) {
+      return alert("Please add the required information and ensure price is a positive number");
+    } else {
+      const newProduct = {
+        id: crypto.randomUUID(),
+        name: newName,
+        category: newCategory,
+        price: parsedPrice,
+      };
+      addNewProduct(newProduct);
     }
   };
 
@@ -43,7 +49,7 @@ const CreateProduct = () => {
           display: "flex",
           flexDirection: "column",
           gap: "20px",
-          padding: "45px"
+          padding: "45px",
         }}
       >
         <input
@@ -72,7 +78,7 @@ const CreateProduct = () => {
           type="number"
           placeholder="Enter Product Price"
           value={newPrice}
-          onChange={(e) => setNewPrice(Number(e.target.value))}
+          onChange={(e) => setNewPrice(e.target.value)}
           style={{
             padding: "15px",
             borderRadius: "8px",
@@ -91,7 +97,7 @@ const CreateProduct = () => {
             fontSize: "15px",
             borderRadius: "5px",
             padding: "12px",
-            marginTop: "15px"
+            marginTop: "15px",
           }}
         >
           Create Product

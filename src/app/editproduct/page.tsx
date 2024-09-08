@@ -1,14 +1,28 @@
 "use client";
 
 import { UseProductContext } from "@/Context/ProductContext";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const EditProduct = () => {
   const { editedProduct, name, category, price } = UseProductContext();
 
   const [productName, setProductName] = useState(name);
   const [productCategory, setProductCategory] = useState(category);
-  const [productPrice, setProductPrice] = useState<number>(price);
+  const [productPrice, setProductPrice] = useState<string>(price.toString());
+
+  const router = useRouter();
+
+  const handleEdit = () => {
+    const parsedPrice = parseFloat(productPrice);
+    editedProduct(productName, productCategory, parsedPrice);
+  };
+
+  useEffect(() => {
+    if (!name && !category && !price) {
+      router.push("/");
+    }
+  },  [name, category, price, router]);
 
   return (
     <div
@@ -55,7 +69,7 @@ const EditProduct = () => {
         <input
           type="text"
           value={productPrice}
-          onChange={(e) => setProductPrice(Number(e.target.value))}
+          onChange={(e) => setProductPrice(e.target.value)}
           style={{
             padding: "15px",
             borderRadius: "8px",
@@ -63,9 +77,7 @@ const EditProduct = () => {
           }}
         />
         <button
-          onClick={() => {
-            editedProduct(productName, productCategory, productPrice);
-          }}
+          onClick={handleEdit}
           style={{
             color: "white",
             backgroundColor: "#0283ce",
