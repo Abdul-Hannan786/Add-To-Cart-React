@@ -15,14 +15,25 @@ const EditProduct = () => {
 
   const handleEdit = () => {
     const parsedPrice = parseFloat(productPrice);
-    editedProduct(productName, productCategory, parsedPrice);
+    if (
+      productName.trim() === "" ||
+      productCategory.trim() === "" ||
+      isNaN(parsedPrice) ||
+      parsedPrice <= 0
+    ) {
+      alert(
+        "Please add the required information and ensure price is a positive number"
+      );
+    } else {
+      editedProduct(productName, productCategory, parsedPrice);
+    }
   };
 
   useEffect(() => {
     if (!name && !category && !price) {
       router.push("/");
     }
-  },  [name, category, price, router]);
+  }, [name, category, price, router]);
 
   return (
     <div
@@ -67,7 +78,7 @@ const EditProduct = () => {
           }}
         />
         <input
-          type="text"
+          type="number"
           value={productPrice}
           onChange={(e) => setProductPrice(e.target.value)}
           style={{
